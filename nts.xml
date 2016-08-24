@@ -804,8 +804,9 @@
               authenticated and MUST NOT be encrypted [[Ed. Note: so
               that if the server can't decrypt the request, it can
               still echo back the Unique Identifier in the NTS NAK it
-              sends]].  MUST NOT duplicate those of any previous
-              request.
+              sends]]. MUST select the Unique Identifier as described in
+              <xref target="The Unique Identifier extension"/>
+              
             </t>
             <t>
               Exactly one NTS Cookie extension, which MUST be
@@ -834,6 +835,10 @@
           authenticated). However, the server MUST discard any
           unauthenticated extensions and process the packet as though
           they were not present.
+        </t>
+        <t>
+             The client MUST store the value of Unique Identifier in &quot;uid&quot; 
+             variable.
         </t>
         <t>
           Upon receiving an NTS-protected request, the server SHALL
@@ -891,11 +896,17 @@
         </t>
         <t>
           Upon receiving an NTS-protected response, the client MUST
-          verify that the Unique Identifier matches that of an
-          outstanding request, and that the packet is authentic under
-          the S2C key associated with that request. If either of these
-          checks fails, the packet MUST be discarded without further
+          perform the following strictly in the order mentioned.
+          <list style="numbers">
+                <t> Verify that the Unique Identifier matches the &quot;uid&quot; variable of an
+          outstanding request.</t>
+                <t> The packet is authentic under the S2C key associated with that request.</t>
+          </list>
+           If either of these checks fails, the packet MUST be discarded without further
           processing.
+        </t>
+        <t> 
+        The client MUST clear the &quot;uid&quot; variable to a random 32-octets long value.
         </t>
       </section>
     </section>
